@@ -10,5 +10,4 @@ class Vehicle:
         print(f"The all new {self.color} {self.brand} {self.model} is being driving across the highway!")
 
 car = Vehicle("Red","Dodge","Charger")
-car.driving()
-
+car.drifting()
