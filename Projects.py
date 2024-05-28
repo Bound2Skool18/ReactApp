@@ -218,6 +218,61 @@ if response.status_code == 200:
 else:
     print("An error occurred!")
 
+#Weather API with Tkinter
+import tkinter as tk
+from tkinter import messagebox
+import requests
+
+# Your API key and base URL
+API_KEY = "65a63485b2b8250eafcafb56c8a4b896"
+BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
+
+# Function to get weather data
+def get_weather():
+    city = city_entry.get()
+    if not city:
+        messagebox.showerror("Input Error", "Please enter a city name.")
+        return
+    
+    request_url = f"{BASE_URL}?appid={API_KEY}&q={city}"
+    response = requests.get(request_url)
+    
+    if response.status_code == 200:
+        data = response.json()
+        weather = data['weather'][0]['description']
+        temperature_celsius = round(data["main"]["temp"] - 273.15, 2)
+        temperature_fahrenheit = round((temperature_celsius * 9/5) + 32, 2)
+        
+        weather_label.config(text=f"Weather: {weather}")
+        temp_label.config(text=f"Temperature: {temperature_fahrenheit}°F")
+    else:
+        messagebox.showerror("Error", "An error occurred while fetching the data!")
+
+# Create the main window
+root = tk.Tk()
+root.title("Weather App")
+
+# Create and place the city input widgets
+city_label = tk.Label(root, text="Choose your city:")
+city_label.pack(pady=10)
+
+city_entry = tk.Entry(root)
+city_entry.pack(pady=5)
+
+# Create and place the buttons and labels for displaying weather info
+get_weather_button = tk.Button(root, text="Get Weather", command=get_weather)
+get_weather_button.pack(pady=10)
+
+weather_label = tk.Label(root, text="")
+weather_label.pack(pady=5)
+
+temp_label = tk.Label(root, text="")
+temp_label.pack(pady=5)
+
+# Run the main event loop
+root.mainloop()
+
+
 #Text Assistant
 import datetime
 import webbrowser
